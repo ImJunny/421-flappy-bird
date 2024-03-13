@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css"></link>
+    <title>Flappy Bird</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="gameContainer" @click="startGame">
+        <div ref="birdRef" id="bird" :style="{bottom:birdY + 'px'}"></div>
+        <div class="pipesContainer" :style="{right:pipesX + 'px', bottom:pipesY +'px'}">
+          <div ref="topRef" class="pipe topPipe"></div>
+          <div ref="bottomRef" class="pipe bottomPipe"></div>
+        </div>
+        <div id="gameover" v-show="gameover"></div>
+        <div id="score">
+          <img v-for="(num, index) in scoreArr" :src="'/sprites/' + num + '.png'" class="number">
+        </div>
+        <div id="base"></div>
+      </div>
+    </div>
+  </body>
+</html>
