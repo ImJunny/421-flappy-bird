@@ -67,6 +67,14 @@ body {
 
 #score {
   position: absolute;
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
+}
+
+#startMenu{
+  width:184px;
+  height:267px;
+  background-image:url("/sprites/message.png");
+  position:absolute;
+  margin-top:69px;
 }

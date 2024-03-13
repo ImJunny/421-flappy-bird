@@ -14,6 +14,7 @@
           <div ref="topRef" class="pipe topPipe"></div>
           <div ref="bottomRef" class="pipe bottomPipe"></div>
         </div>
+        <div id=startMenu v-show="!started"></div>
         <div id="gameover" v-show="gameover"></div>
         <div id="score">
           <img v-for="(num, index) in scoreArr" :src="'/sprites/' + num + '.png'" class="number">

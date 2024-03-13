@@ -6,14 +6,19 @@ const app = Vue.createApp({
       pipesX: -52,
       pipesY: 0,
       animateID: null,
+      animateUpID:null,
       started: false,
       score: 0,
       scoreArr: [0],
+      jumpFactor:0,
+      jumping: false
     };
   },
   methods: {
     startGame() {
-      if (this.gameover) return;
+      if(this.gameover){
+        return
+      }
 
       if (!this.started) {
         this.update();
@@ -41,10 +46,11 @@ const app = Vue.createApp({
           birdLeft <= pipeRight &&
           !(birdBottom <= bottomTop && birdTop >= topBottom)) ||
         this.birdY <= 112
-      ) {
-        this.loseGame();
-      }
-      this.birdY -= 1;
+      ) this.loseGame();
+
+      //temp
+      if(this.jumping)
+        this.birdY -= 1.5;
 
       if (birdRight == pipeRight) {
         this.score++;
@@ -59,18 +65,35 @@ const app = Vue.createApp({
         this.pipesX = -52;
         this.pipesY = Math.random() * 210 - 150;
       }
-      this.pipesX += 2;
+      this.pipesX += 1.5;
     },
 
     loseGame() {
-      this.started = false;
       this.gameover = true;
       cancelAnimationFrame(this.animateID);
+      cancelAnimationFrame(this.animateUpID);
     },
 
     moveBird() {
-      if (this.birdY < 450) this.birdY += 30;
+      this.jumping = true;
+      this.jumpFactor = 6
+      this.animateUpID = requestAnimationFrame(this.moveBirdHelper)
     },
+
+    moveBirdHelper(){
+      if (this.birdY<450 && this.jumpFactor>0) {
+        this.birdY+=this.jumpFactor
+        this.jumpFactor *=.8
+
+
+        requestAnimationFrame(this.moveBirdHelper)
+      }
+      else {
+        this.jumpFactor=0
+        this.jumping=false
+      }
+      // if (this.birdY < 450) this.birdY += 30;
+    }
   },
 });
 
