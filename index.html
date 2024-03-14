@@ -25,7 +25,7 @@
   <body>
     <div id="app">
       <div id="gameContainer" @click="startGame">
-        <div ref="birdRef" id="bird" :style="{bottom:birdY + 'px'}"></div>
+        <div ref="birdRef" id="bird" :style="{bottom: birdY + 'px'}"></div>
         <div class="pipesContainer" :style="{right:pipesX + 'px', bottom:pipesY +'px'}">
           <div ref="topRef" class="pipe topPipe"></div>
           <div ref="bottomRef" class="pipe bottomPipe"></div>
@@ -36,8 +36,8 @@
           <div id="gameover" v-show="gameover"></div>
           <h1>Highest score</h1>
           <p v-if="highScore>=0">{{highName}} - {{highScore}}</p>
-          <p v-else v-if="!submitted">no submissions</p>
-          <h2>Enter score?</h2>
+          <p v-else>no submissions</p>
+          <h2 v-if="!submitted">Enter score?</h2>
           <input v-if="!submitted" ref="inputRef" placeholder="Name">
           <button v-if="!submitted" @click="addScore">Submit</button>
           <button @click="playAgain">Play Again</button>

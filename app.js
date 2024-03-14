@@ -14,7 +14,8 @@ const app = Vue.createApp({
       highName: "",
       scoreArr: [0],
       jumpFactor: 0,
-      submitted: false
+      fallFactor: 0.5,
+      submitted: false,
     };
   },
   methods: {
@@ -54,7 +55,12 @@ const app = Vue.createApp({
         this.loseGame();
 
       //temp
-      if (this.jumpFactor<=1) this.birdY -= 1.5;
+      if (this.jumpFactor<=1) {
+        this.fallFactor*=1.2
+        if(this.fallFactor>=4) this.fallFactor=4
+        
+        this.birdY -= this.fallFactor;
+      }
 
       if (birdRight == pipeRight) {
         this.score++;
@@ -79,7 +85,8 @@ const app = Vue.createApp({
     },
 
     moveBird() {
-      this.jumpFactor = 6;
+      this.fallFactor=0.5;
+      this.jumpFactor = 7;
       this.animateUpID = requestAnimationFrame(this.moveBirdHelper);
     },
 
