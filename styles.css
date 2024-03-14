@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -13,7 +14,7 @@ body {
   height: 512px;
   background-image: url("/sprites/background.png");
   margin: auto;
-  transform: scale(1.3);
+  transform: scale(1.5);
   transform-origin: top;
   overflow: hidden;
   display: flex;
@@ -60,9 +61,6 @@ body {
   width: 192px;
   height: 42px;
   background-image: url("/sprites/gameover.png");
-  position: absolute;
-  margin-top: 180px;
-  display: flex;
 }
 
 #score {
@@ -71,10 +69,36 @@ body {
   display: flex;
 }
 
-#startMenu{
-  width:184px;
-  height:267px;
-  background-image:url("/sprites/message.png");
-  position:absolute;
-  margin-top:69px;
+#startMenu {
+  width: 184px;
+  height: 267px;
+  background-image: url("/sprites/message.png");
+  position: absolute;
+  margin-top: 69px;
+}
+
+#scoreMenu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: 120px;
+  background-color: #fca146;
+  padding: 20px;
+  text-align: center;
+}
+
+h1,
+h2,
+p {
+  color: white;
+}
+
+h1 {
+  font-size: 20px;
+}
+h2 {
+  font-size: 15px;
+}
+
+p {
 }

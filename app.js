@@ -1,3 +1,4 @@
+const db = firebase.firestore();
 const app = Vue.createApp({
   data() {
     return {
@@ -6,21 +7,24 @@ const app = Vue.createApp({
       pipesX: -52,
       pipesY: 0,
       animateID: null,
-      animateUpID:null,
+      animateUpID: null,
       started: false,
       score: 0,
+      highScore: -1,
+      highName: "",
       scoreArr: [0],
-      jumpFactor:0,
-      jumping: false
+      jumpFactor: 0,
+      jumping: false,
     };
   },
   methods: {
     startGame() {
-      if(this.gameover){
-        return
+      if (this.gameover) {
+        return;
       }
 
       if (!this.started) {
+        this.getScores();
         this.update();
         this.started = true;
       } else this.moveBird();
@@ -46,11 +50,11 @@ const app = Vue.createApp({
           birdLeft <= pipeRight &&
           !(birdBottom <= bottomTop && birdTop >= topBottom)) ||
         this.birdY <= 112
-      ) this.loseGame();
+      )
+        this.loseGame();
 
       //temp
-      if(this.jumping)
-        this.birdY -= 1.5;
+      if (this.jumping) this.birdY -= 1.5;
 
       if (birdRight == pipeRight) {
         this.score++;
@@ -76,24 +80,39 @@ const app = Vue.createApp({
 
     moveBird() {
       this.jumping = true;
-      this.jumpFactor = 6
-      this.animateUpID = requestAnimationFrame(this.moveBirdHelper)
+      this.jumpFactor = 6;
+      this.animateUpID = requestAnimationFrame(this.moveBirdHelper);
     },
 
-    moveBirdHelper(){
-      if (this.birdY<450 && this.jumpFactor>0) {
-        this.birdY+=this.jumpFactor
-        this.jumpFactor *=.8
+    moveBirdHelper() {
+      if (this.birdY < 450 && this.jumpFactor > 0) {
+        this.birdY += this.jumpFactor;
+        this.jumpFactor *= 0.8;
 
-
-        requestAnimationFrame(this.moveBirdHelper)
-      }
-      else {
-        this.jumpFactor=0
-        this.jumping=false
+        requestAnimationFrame(this.moveBirdHelper);
+      } else {
+        this.jumpFactor = 0;
+        this.jumping = false;
       }
       // if (this.birdY < 450) this.birdY += 30;
-    }
+    },
+
+    addScore() {
+      let name = this.$refs.inputRef.value;
+      db.collection("highscores").add({
+        name: name,
+        score: this.score,
+      });
+    },
+    async getScores() {
+      const scoreRef = db.collection("highscores").orderBy("score", "desc");
+      const snapshot = await scoreRef.get();
+
+      if (!snapshot.empty) {
+        this.highName = snapshot.docs[0].data().name;
+        this.highScore = snapshot.docs[0].data().score;
+      }
+    },
   },
 });
 

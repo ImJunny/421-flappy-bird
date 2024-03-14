@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+  <head>    <script src="firebase.js"></script>
+    <script type="module">
+      const firebaseConfig = {
+        apiKey: "AIzaSyB6MMsCc5S6D3ZM0TESXWRtXPgJP5fW1bs",
+        authDomain: "flappy-8e7f5.firebaseapp.com",
+        projectId: "flappy-8e7f5",
+        storageBucket: "flappy-8e7f5.appspot.com",
+        messagingSenderId: "853404600962",
+        appId: "1:853404600962:web:8b9b7fd99ce2e463ab829b",
+        measurementId: "G-G13PM06G86"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      db.settings({})
+    </script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="app.js" defer></script>
     <link rel="stylesheet" href="styles.css"></link>
+
     <title>Flappy Bird</title>
   </head>
   <body>
@@ -15,7 +30,16 @@
           <div ref="bottomRef" class="pipe bottomPipe"></div>
         </div>
         <div id=startMenu v-show="!started"></div>
-        <div id="gameover" v-show="gameover"></div>
+        
+        <div id="scoreMenu" v-show="gameover">
+          <div id="gameover" v-show="gameover"></div>
+          <h1>Highest score</h1>
+          <p v-if="highScore>=0">{{highName}} - {{highScore}}</p>
+          <p v-else>no submissions</p>
+          <h2>Enter score?</h2>
+          <input ref="inputRef" placeholder="Name">
+          <button @click="addScore">Submit</button>
+        </div>
         <div id="score">
           <img v-for="(num, index) in scoreArr" :src="'/sprites/' + num + '.png'" class="number">
         </div>
