@@ -14,7 +14,7 @@ const app = Vue.createApp({
       highName: "",
       scoreArr: [0],
       jumpFactor: 0,
-      jumping: false,
+      submitted: false
     };
   },
   methods: {
@@ -54,7 +54,7 @@ const app = Vue.createApp({
         this.loseGame();
 
       //temp
-      if (this.jumping) this.birdY -= 1.5;
+      if (this.jumpFactor<=1) this.birdY -= 1.5;
 
       if (birdRight == pipeRight) {
         this.score++;
@@ -79,7 +79,6 @@ const app = Vue.createApp({
     },
 
     moveBird() {
-      this.jumping = true;
       this.jumpFactor = 6;
       this.animateUpID = requestAnimationFrame(this.moveBirdHelper);
     },
@@ -92,17 +91,22 @@ const app = Vue.createApp({
         requestAnimationFrame(this.moveBirdHelper);
       } else {
         this.jumpFactor = 0;
-        this.jumping = false;
       }
       // if (this.birdY < 450) this.birdY += 30;
     },
 
     addScore() {
       let name = this.$refs.inputRef.value;
+      if(name=="")return;
       db.collection("highscores").add({
         name: name,
         score: this.score,
       });
+      if(this.score>this.highScore){
+        this.highName = name
+        this.highScore = this.score
+      }
+      this.submitted=true;
     },
     async getScores() {
       const scoreRef = db.collection("highscores").orderBy("score", "desc");
@@ -113,6 +117,20 @@ const app = Vue.createApp({
         this.highScore = snapshot.docs[0].data().score;
       }
     },
+    playAgain(){
+      this.birdY=  250,
+      this.pipesX= -52,
+      this.pipesY= 0,
+      this.animateID= null,
+      this.animateUpID= null,
+      this.started= false,
+      this.score= 0,
+      this.scoreArr= [0],
+      this.submitted= false
+      this.jumpFactor=0;
+      this.startGame()
+      this.gameover=false
+    }
   },
 });
 
